@@ -8,6 +8,7 @@ const connectDb = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
     console.log("MonogDB Connected");
   } catch (err) {
