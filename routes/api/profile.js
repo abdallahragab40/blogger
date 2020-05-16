@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Blog = require("../../models/Blog");
 const { check, validationResult } = require("express-validator");
 
 const router = express.Router();
@@ -54,6 +55,7 @@ router.post(
       skills,
       youtube,
       facebook,
+      github,
       instagram,
       linkedin,
       twitter,
@@ -75,6 +77,7 @@ router.post(
     profileFields.social = {};
     if (youtube) profileFields.social.youtube = youtube;
     if (facebook) profileFields.social.facebook = facebook;
+    if (github) profileFields.social.github = github;
     if (instagram) profileFields.social.instagram = instagram;
     if (linkedin) profileFields.social.linkedin = linkedin;
     if (twitter) profileFields.social.twitter = twitter;
@@ -144,6 +147,10 @@ router.get("/user/:user_id", async (req, res) => {
 // @access  Private
 router.delete("/", auth, async (req, res) => {
   try {
+
+    // Remove blogs
+    await Blog.deleteMany({user:req.user.id})
+
     // Remove profile
     await Profile.findOneAndRemove({
       user: req.user.id,

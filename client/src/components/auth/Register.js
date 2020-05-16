@@ -49,7 +49,7 @@ const Register = (props) => {
                 <form onSubmit={(e) => onSubmit(e)}>
                   <div className="form-group">
                     <label className="form-control-label" htmlFor="input-name">
-                      Name
+                      Full Name
                     </label>
                     <div className="input-group">
                       <div className="input-group-prepend">

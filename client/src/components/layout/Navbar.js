@@ -9,6 +9,12 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <div className="collapse navbar-collapse" id="navbarCollapse">
       <ul className="navbar-nav mt-4 mt-lg-0 ml-auto">
         <li className="nav-item ">
+          <Link className="nav-link" to="/">
+            <i className="fas fa-user"></i>{" "}
+            <span className="hide-sm">Profile</span>
+          </Link>
+        </li>
+        <li className="nav-item ">
           <Link onClick={logout} className="nav-link" to="/">
             <i className="fas fa-sign-out-alt"></i>{" "}
             <span className="hide-sm">Logout</span>
@@ -22,9 +28,9 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <div className="collapse navbar-collapse" id="navbarCollapse">
       <ul className="navbar-nav mt-4 mt-lg-0 ml-auto">
         <li className="nav-item ">
-          <a className="nav-link" href="index.html">
+          <Link className="nav-link" to="/">
             Blogs
-          </a>
+          </Link>
         </li>
       </ul>
       <Link
@@ -43,11 +49,11 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <a className="nav-link active font-weight-bold" href="/">
+        <Link className="nav-link active font-weight-bold" to="/">
           Blogger
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
