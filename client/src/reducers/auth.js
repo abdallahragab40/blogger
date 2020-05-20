@@ -2,9 +2,9 @@ import TYPES from "../actions/types";
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticated: null,
+  isAuthenticated: false,
   loading: true,
-  user: null,
+  user: {},
 };
 
 export default function (state = initialState, action) {

@@ -10,7 +10,7 @@ const ProfileAbout = ({
 }) => {
   return (
     <Fragment>
-      <div className=" bg-light  p-2">
+      <div className="bg-light p-2">
         {bio && (
           <Fragment>
             <h2 className="text-primary mt-2">{name}'s Bio</h2>
@@ -19,11 +19,11 @@ const ProfileAbout = ({
           </Fragment>
         )}
         <hr className="divider divider-fade divider-dark my-3" />
-        <h2 className="text-primary">Skill Set</h2>
+        <h2 className="text-primary">Skills</h2>
         <div className="skills">
           {skills.map((skill, index) => (
             <span key={index} className="p-1">
-              <i className="fa fa-check" /> {skill}
+              <span className="badge badge-primary m-1">{skill}</span>
             </span>
           ))}
         </div>

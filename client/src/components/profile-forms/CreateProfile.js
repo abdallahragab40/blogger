@@ -56,7 +56,7 @@ const CreateProfile = ({ createProfile, history }) => {
         <small className="form-text text-danger mb-2">* Required field</small>
         <form className="form" onSubmit={(e) => onSubmit(e)}>
           <div className="form-group">
-            <label for="select">* Select Professional Status</label>
+            <label htmlFor="select">* Select Professional Status</label>
             <select
               className="form-control"
               name="status"
@@ -81,7 +81,7 @@ const CreateProfile = ({ createProfile, history }) => {
             <input
               type="text"
               placeholder="Company"
-              class="form-control"
+              className="form-control"
               name="company"
               value={company}
               onChange={(e) => onChange(e)}
@@ -94,7 +94,7 @@ const CreateProfile = ({ createProfile, history }) => {
             <input
               type="text"
               placeholder="Website"
-              class="form-control"
+              className="form-control"
               name="website"
               value={website}
               onChange={(e) => onChange(e)}
@@ -107,7 +107,7 @@ const CreateProfile = ({ createProfile, history }) => {
             <input
               type="text"
               placeholder="Location"
-              class="form-control"
+              className="form-control"
               name="location"
               value={location}
               onChange={(e) => onChange(e)}
@@ -120,7 +120,7 @@ const CreateProfile = ({ createProfile, history }) => {
             <input
               type="text"
               placeholder="* Skills"
-              class="form-control"
+              className="form-control"
               name="skills"
               value={skills}
               onChange={(e) => onChange(e)}
@@ -135,7 +135,7 @@ const CreateProfile = ({ createProfile, history }) => {
               placeholder="A short bio of yourself"
               name="bio"
               defaultValue={""}
-              class="form-control"
+              className="form-control"
               value={bio}
               onChange={(e) => onChange(e)}
             />
@@ -161,7 +161,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#0077b5" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Linkedin URL"
                   name="linkedin"
@@ -175,7 +175,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#24292e" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Github URL"
                   name="github"
@@ -189,7 +189,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#38a1f3" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Twitter URL"
                   name="twitter"
@@ -203,7 +203,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#3b5998" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Facebook URL"
                   name="facebook"
@@ -217,7 +217,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#c4302b" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="YouTube URL"
                   name="youtube"
@@ -232,7 +232,7 @@ const CreateProfile = ({ createProfile, history }) => {
                   style={{ color: "#e4405f" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Instagram URL"
                   name="instagram"

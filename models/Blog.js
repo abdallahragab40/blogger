@@ -20,8 +20,8 @@ const BlogSchema = new mongoose.Schema({
     type: String,
   },
   photo: {
-    data: Buffer,
-    contentType: String,
+    type: Buffer,
+    required: true,
   },
   category: {
     type: String,

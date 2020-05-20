@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const connectDB = require("./config/db");
 
 // Connect database
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 // Init Middleware
 app.use(express.json());
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 app.get("/", (req, res) => res.send("App running"));
 

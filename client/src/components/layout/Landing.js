@@ -16,7 +16,7 @@ const Landing = ({ isAuthenticated }) => {
               <img
                 alt="Home Avatar"
                 src="/img/svg/illustrations/illustration-3.svg"
-                className="img-fluid mw-md-120"
+                className="img-fluid mw-md-120 img-responsive mt-1"
               />
             </figure>
           </div>
@@ -30,14 +30,11 @@ const Landing = ({ isAuthenticated }) => {
               Profile.
             </p>
             <div className="text-center text-md-left mt-5">
-              <Link
-                className="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block "
-                to="/login"
-              >
+              <Link className="navbar-btn btn btn-sm btn-primary " to="/login">
                 Sign In
               </Link>
               <Link
-                className="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                className="navbar-btn btn btn-sm btn-primary ml-3"
                 to="/register"
               >
                 Sign Up

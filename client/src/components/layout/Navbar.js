@@ -1,86 +1,114 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
+import { getBlogSearch } from "../../actions/blog";
+import Navbarr from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import { Form, FormControl } from "react-bootstrap";
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({
+  auth: { isAuthenticated, loading },
+  logout,
+  getBlogSearch,
+  history,
+}) => {
+  const [search, setSearch] = useState("");
+  const [select, setSelect] = useState({
+    title: "",
+    author: "",
+    tag: "",
+  });
+  history = useHistory();
+
+  const submitSearch = (e) => {
+    e.preventDefault();
+    getBlogSearch(search, select);
+    history.push("/blogs");
+    setSearch("");
+  };
+
   const authLinks = (
-    <div className="collapse navbar-collapse" id="navbarCollapse">
-      <ul className="navbar-nav mt-4 mt-lg-0 ml-auto">
-        <li className="nav-item ">
-          <Link className="nav-link" to="/">
-            <i className="fas fa-user"></i>{" "}
-            <span className="hide-sm">Profile</span>
-          </Link>
-        </li>
-        <li className="nav-item ">
-          <Link onClick={logout} className="nav-link" to="/">
-            <i className="fas fa-sign-out-alt"></i>{" "}
-            <span className="hide-sm">Logout</span>
-          </Link>
-        </li>
-      </ul>
-    </div>
+    <React.Fragment>
+      <Nav className="ml-auto">
+        <Form inline onSubmit={(e) => submitSearch(e)}>
+          <FormControl
+            type="text"
+            placeholder="Search By"
+            className="mr-sm-2"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Form.Control
+            as="select"
+            value={select}
+            onChange={(e) => setSelect(e.target.value)}
+            name="select"
+          >
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="tag">Tag</option>
+          </Form.Control>
+        </Form>
+
+        <Nav.Link as={Link} to="/create-blog">
+          <i className="fas fa-plus-circle"></i> Create Blog
+        </Nav.Link>
+
+        <Nav.Link as={Link} to="/blogs">
+          <i className="fas fa-book"></i> Blogs
+        </Nav.Link>
+
+        <Nav.Link as={Link} to="/">
+          <i className="fas fa-user"></i> Profile
+        </Nav.Link>
+        <Nav.Link as={Link} onClick={logout} to="/">
+          <i className="fas fa-sign-out-alt"></i> Logout
+        </Nav.Link>
+      </Nav>
+    </React.Fragment>
   );
 
   const guestLinks = (
-    <div className="collapse navbar-collapse" id="navbarCollapse">
-      <ul className="navbar-nav mt-4 mt-lg-0 ml-auto">
-        <li className="nav-item ">
-          <Link className="nav-link" to="/">
-            Blogs
-          </Link>
-        </li>
-      </ul>
-      <Link
-        className="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
-        to="/login"
-      >
+    <Nav className="ml-auto">
+      <Nav.Link as={Link} to="/blogs">
+        <i className="fas fa-book"></i> Blogs
+      </Nav.Link>
+      <Link to="/login" className="btn btn-sm btn-primary m-2">
         Sign In
       </Link>
-      <Link
-        className="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
-        to="/register"
-      >
+      <Link to="/register" className="btn btn-sm btn-primary m-2">
         Sign Up
       </Link>
-    </div>
+    </Nav>
   );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <Navbarr bg="light" expand="lg">
       <div className="container">
-        <Link className="nav-link active font-weight-bold" to="/">
+        <Navbarr.Brand as={Link} to="/">
           Blogger
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-
-        {!loading && (
-          <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-        )}
+        </Navbarr.Brand>
+        <Navbarr.Toggle aria-controls="basic-navbar-nav" />
+        <Navbarr.Collapse id="basic-navbar-nav">
+          {!loading && (
+            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+          )}
+        </Navbarr.Collapse>
       </div>
-    </nav>
+    </Navbarr>
   );
 };
 
 Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  getBlogSearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, { logout, getBlogSearch })(Navbar);

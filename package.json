@@ -20,7 +20,10 @@
     "joi-browser": "^13.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.13",
-    "request": "^2.88.2"
+    "multer": "^1.4.2",
+    "react-bootstrap": "^1.0.1",
+    "request": "^2.88.2",
+    "sharp": "^0.25.3"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

@@ -4,26 +4,47 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
 
+const initialState = {
+  company: "",
+  website: "",
+  location: "",
+  status: "",
+  skills: "",
+  bio: "",
+  twitter: "",
+  facebook: "",
+  github: "",
+  linkedin: "",
+  youtube: "",
+  instagram: "",
+};
+
 const EditProfile = ({
   createProfile,
   history,
   getCurrentProfile,
   profile: { profile, loading },
 }) => {
-  const [formData, setFormData] = useState({
-    company: "",
-    website: "",
-    location: "",
-    status: "",
-    skills: "",
-    bio: "",
-    twitter: "",
-    facebook: "",
-    github: "",
-    linkedin: "",
-    youtube: "",
-    instagram: "",
-  });
+  const [formData, setFormData] = useState(initialState);
+
+  const [displaySocialInputs, toggleSocialInputs] = useState(false);
+
+  useEffect(() => {
+    if (!profile) getCurrentProfile();
+    if (!loading && profile) {
+      const profileData = { ...initialState };
+
+      for (const key in profile) {
+        if (key in profileData) profileData[key] = profile[key];
+      }
+      for (const key in profile.social) {
+        if (key in profileData) profileData[key] = profile.social[key];
+      }
+      if (Array.isArray(profileData.skills))
+        profileData.skills = profileData.skills.join(", ");
+      setFormData(profileData);
+    }
+  }, [loading, getCurrentProfile, profile]);
 
   const {
     company,
@@ -40,47 +61,25 @@ const EditProfile = ({
     instagram,
   } = formData;
 
-  const [displaySocialInputs, toggleSocialInputs] = useState(false);
-
-  useEffect(() => {
-    getCurrentProfile();
-
-    setFormData({
-      company: loading || !profile.company ? "" : profile.company,
-      website: loading || !profile.website ? "" : profile.website,
-      location: loading || !profile.location ? "" : profile.location,
-      status: loading || !profile.status ? "" : profile.status,
-      skills: loading || !profile.skills ? "" : profile.skills.join(", "),
-      bio: loading || !profile.bio ? "" : profile.bio,
-      twitter: loading || !profile.social ? "" : profile.social.twitter,
-      facebook: loading || !profile.social ? "" : profile.social.facebook,
-      github: loading || !profile.social ? "" : profile.social.github,
-      instagram: loading || !profile.social ? "" : profile.social.instagram,
-      linkedin: loading || !profile.social ? "" : profile.social.linkedin,
-      youtube: loading || !profile.social ? "" : profile.social.youtube,
-    });
-  }, [loading, getCurrentProfile]);
-
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createProfile(formData, history, true);
+    createProfile(formData, history, profile ? true : false);
   };
 
   return (
     <Fragment>
       <section className="container">
-        <h1 className="large text-primary">Create Your Profile</h1>
+        <h1 className="large text-primary">Edit Your Profile</h1>
         <p className="lead">
-          <i className="fas fa-user" /> Let's get some information to make your
-          profile stand out
+          <i className="fas fa-user" /> Add some changes to your profile
         </p>
         <small className="form-text text-danger mb-2">* Required field</small>
         <form className="form" onSubmit={(e) => onSubmit(e)}>
           <div className="form-group">
-            <label for="select">* Select Professional Status</label>
+            <label htmlFor="select">* Select Professional Status</label>
             <select
               className="form-control"
               name="status"
@@ -105,7 +104,7 @@ const EditProfile = ({
             <input
               type="text"
               placeholder="Company"
-              class="form-control"
+              className="form-control"
               name="company"
               value={company}
               onChange={(e) => onChange(e)}
@@ -118,7 +117,7 @@ const EditProfile = ({
             <input
               type="text"
               placeholder="Website"
-              class="form-control"
+              className="form-control"
               name="website"
               value={website}
               onChange={(e) => onChange(e)}
@@ -131,7 +130,7 @@ const EditProfile = ({
             <input
               type="text"
               placeholder="Location"
-              class="form-control"
+              className="form-control"
               name="location"
               value={location}
               onChange={(e) => onChange(e)}
@@ -144,7 +143,7 @@ const EditProfile = ({
             <input
               type="text"
               placeholder="* Skills"
-              class="form-control"
+              className="form-control"
               name="skills"
               value={skills}
               onChange={(e) => onChange(e)}
@@ -158,8 +157,7 @@ const EditProfile = ({
             <textarea
               placeholder="A short bio of yourself"
               name="bio"
-              defaultValue={""}
-              class="form-control"
+              className="form-control"
               value={bio}
               onChange={(e) => onChange(e)}
             />
@@ -185,7 +183,7 @@ const EditProfile = ({
                   style={{ color: "#0077b5" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Linkedin URL"
                   name="linkedin"
@@ -199,7 +197,7 @@ const EditProfile = ({
                   style={{ color: "#24292e" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Github URL"
                   name="github"
@@ -213,7 +211,7 @@ const EditProfile = ({
                   style={{ color: "#38a1f3" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Twitter URL"
                   name="twitter"
@@ -227,7 +225,7 @@ const EditProfile = ({
                   style={{ color: "#3b5998" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Facebook URL"
                   name="facebook"
@@ -241,7 +239,7 @@ const EditProfile = ({
                   style={{ color: "#c4302b" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="YouTube URL"
                   name="youtube"
@@ -256,7 +254,7 @@ const EditProfile = ({
                   style={{ color: "#e4405f" }}
                 />
                 <input
-                  class="form-control col-sm-11"
+                  className="form-control col-sm-11"
                   type="text"
                   placeholder="Instagram URL"
                   name="instagram"

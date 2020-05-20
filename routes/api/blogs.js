@@ -4,16 +4,32 @@ const auth = require("../../middleware/auth");
 const Blog = require("../../models/Blog");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const multer = require("multer");
+const sharp = require("sharp");
 
 const router = express.Router();
+
+const upload = multer({
+  limits: {
+    fileSize: 5000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return new Error("please upload an image");
+    }
+    cb(undefined, true);
+  },
+});
 
 // @route   POST api/blogs
 // @desc    Create Blog
 // @access  private
 router.post(
   "/",
+
   [
     auth,
+    upload.single("photo"),
     [
       check("title", "Title is required")
         .not()
@@ -22,9 +38,10 @@ router.post(
       check("body", "Body is required")
         .not()
         .isEmpty()
-        .isLength({ min: 100, max: 1000 }),
+        .isLength({ min: 50, max: 1000 }),
       check("category", "Category is Required").not().isEmpty(),
       check("tags", "Tags is Required").not().isEmpty(),
+      // check("photo", "Photo is Required").not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -36,9 +53,16 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select("-password");
 
+      const buffer = await sharp(req.file.buffer)
+        .resize({ width: 1000, height: 500 })
+        .png()
+        .toBuffer();
+
+      req.body.photo = buffer;
       const newBlog = new Blog({
         title: req.body.title,
         body: req.body.body,
+        photo: req.body.photo,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
@@ -57,11 +81,12 @@ router.post(
 
 // @route   GET api/blogs
 // @desc    Get all blogs
-// @access  Private
+// @access  public
 
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ date: -1 });
+
     res.json(blogs);
   } catch (err) {
     console.error(err.message);
