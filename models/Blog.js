@@ -25,11 +25,9 @@ const BlogSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true,
   },
   tags: {
     type: [String],
-    required: true,
   },
   likes: [
     {

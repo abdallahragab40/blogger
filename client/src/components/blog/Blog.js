@@ -23,7 +23,7 @@ const Blog = ({ getBlog, blog: { blog, loading }, match }) => {
       <BlogItem blog={blog} showActions={false} />
       <CommentForm blogId={blog._id} />
       <div>
-        {blog.comments.map((comment) => (
+        {blog.comments?.map((comment) => (
           <CommentItem key={comment._id} comment={comment} blogId={blog._id} />
         ))}
       </div>

@@ -6,6 +6,8 @@ const initialState = {
   blog: {},
   loading: true,
   error: {},
+  start: 0,
+  size: 3,
 };
 
 export default function (state = initialState, action) {
@@ -17,6 +19,15 @@ export default function (state = initialState, action) {
         ...state,
         blogs: payload,
         loading: false,
+        start: state.start + state.size,
+      };
+
+    case TYPES.GET_MORE_BLOGS:
+      return {
+        ...state,
+        blogs: state.blogs.concat(payload),
+        loading: false,
+        start: state.start + state.size,
       };
 
     case TYPES.GET_SEARCH:
@@ -56,12 +67,12 @@ export default function (state = initialState, action) {
         loading: false,
       };
 
-    case TYPES.ADD_BLOG:
-      return {
-        ...state,
-        blogs: [payload, ...state.blogs],
-        loading: false,
-      };
+    // case TYPES.ADD_BLOG:
+    //   return {
+    //     ...state,
+    //     blogs: [payload, ...state.blogs],
+    //     loading: false,
+    //   };
 
     case TYPES.ADD_COMMENT:
       return {

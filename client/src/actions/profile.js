@@ -40,7 +40,7 @@ export const getProfiles = () => async (dispatch) => {
 // Get Profile by id
 export const getProfileById = (userId) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`/api/profile/${userId}`);
+    const { data } = await axios.get(`/api/profile/user/${userId}`);
     dispatch({
       type: TYPES.GET_PROFILE,
       payload: data,

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { addBlog } from "../../actions/blog";
 
-const BlogForm = ({ addBlog }) => {
+const BlogForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     body: "",
-    category: "",
+    category: "Other",
     tags: "",
   });
 
@@ -66,7 +65,7 @@ const BlogForm = ({ addBlog }) => {
           <textarea
             className="form-control"
             id="body"
-            rows={3}
+            rows={6}
             required
             name="body"
             value={body}
@@ -78,13 +77,16 @@ const BlogForm = ({ addBlog }) => {
               className="form-control"
               name="category"
               id="select"
+              required
               value={category}
               onChange={(e) => onChange(e)}
             >
-              <option value="Development">Development</option>
+              <option selected value="Development">
+                Development
+              </option>
               <option value="Design">Design</option>
               <option value="Tips">Tips</option>
-              <option value="Manager">Manager</option>
+              <option value="Management">Management</option>
               <option value="Tech">Tech</option>
               <option value="Internship">Internship</option>
               <option value="Other">Other</option>
@@ -115,8 +117,8 @@ const BlogForm = ({ addBlog }) => {
                 className="custom-file-input"
                 id="photo"
                 name="photoData"
-                // value={photoData}
                 onChange={(e) => handlePhotoChange(e)}
+                required
               />
               <label className="custom-file-label" htmlFor="photo">
                 Choose file
@@ -133,8 +135,4 @@ const BlogForm = ({ addBlog }) => {
   );
 };
 
-BlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
-};
-
-export default connect(null, { addBlog })(BlogForm);
+export default connect(null, {})(BlogForm);

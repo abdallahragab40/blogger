@@ -3,11 +3,27 @@ import { setAlert } from "./alert";
 import TYPES from "./types";
 
 // Get Blogs
-export const getBlogs = () => async (dispatch) => {
+export const getBlogs = (start, size) => async (dispatch) => {
   try {
-    const res = await axios.get("/api/blogs");
+    const res = await axios.get(`/api/blogs?start=${start}&size=${size}`);
     dispatch({
       type: TYPES.GET_BLOGS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: TYPES.BLOG_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get More Blogs
+export const getMoreBlogs = (start, size) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/blogs?start=${start}&size=${size}`);
+    dispatch({
+      type: TYPES.GET_MORE_BLOGS,
       payload: res.data,
     });
   } catch (err) {
@@ -34,9 +50,8 @@ export const getBlogSearch = (search, select) => async (dispatch) => {
       case "author":
         p = res.data.filter((blog) => blog.name.includes(search));
         break;
-      // default:
-      //   p = [];
-      //   break;
+      default:
+        break;
     }
     dispatch({
       type: TYPES.GET_SEARCH,
@@ -116,33 +131,20 @@ export const deleteBlog = (id) => async (dispatch) => {
 };
 
 // Add blog
-export const addBlog = (formData, photo) => async (dispatch) => {
+export async function addBlog(blog, photo) {
   let bodyFormData = new FormData();
-  //Object.keys(formData).forEach((value) => data.append(value, formData[value]));
-  bodyFormData.set("blog", JSON.stringify(formData));
+  bodyFormData.set("blog", JSON.stringify(blog));
   bodyFormData.append("photo", photo);
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-  try {
-    const res = await axios.post("/api/blogs", bodyFormData, config);
-    dispatch({
-      type: TYPES.ADD_BLOG,
-      payload: res.data,
-    });
+  console.log(blog);
+  console.log(photo);
 
-    dispatch(setAlert("Blog Created", "success"));
-  } catch (err) {
-    console.log(err.response);
-
-    dispatch({
-      type: TYPES.BLOG_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
-};
+  return await axios({
+    method: "POST",
+    url: "/api/blogs",
+    data: bodyFormData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
 
 // Add comment
 export const addComment = (blogId, formData) => async (dispatch) => {

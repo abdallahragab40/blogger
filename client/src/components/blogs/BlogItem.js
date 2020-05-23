@@ -41,14 +41,17 @@ const BlogItem = ({
   return (
     <div className="row p-1 my-1 bg-light">
       <div>
-        <Link to={`/profile/${user}`}>
+        <Link to={`/profile/user/${user}`}>
           <img className="rounded-circle shadow m-2" src={avatar} alt="" />
           <h4 className="text-center m-2 text-primary">{name}</h4>
         </Link>
       </div>
 
       <div className="col-sm-9 m-2">
-        <h3 className="text-dark">{title}</h3>
+        <Link to={`/blogs/${_id}`} className="text-dark font-weight-bold">
+          {title}
+        </Link>
+        <span className="badge badge-success ml-4">{category}</span>
         <hr className="divider divider-fade divider-dark my-3" />
         <img
           src={getBloggImageUrl(photo?.data)}
@@ -61,16 +64,16 @@ const BlogItem = ({
         <p>
           <span className="font-weight-bold">Posted on </span>
           <Moment format="DD/MM/YYYY">{date}</Moment>
-          {tags.map((tag) => (
+          {tags?.map((tag) => (
             <span key={tag} className="badge badge-primary m-1">
               {tag}
             </span>
           ))}
         </p>
 
-        {showActions && (
+        {!auth.loading && showActions && (
           <Fragment>
-            <button
+            {/* <button
               onClick={(e) => addLike(_id)}
               className="btn btn-primary mr-1"
             >
@@ -82,7 +85,7 @@ const BlogItem = ({
               className="btn btn-secondary mr-2"
             >
               <i className="fas fa-thumbs-down " />
-            </button>
+            </button> */}
             <Link to={`/blogs/${_id}`} className="btn btn-primary mr-1">
               View Comments
               {comments.length > 0 && (

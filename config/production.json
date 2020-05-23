@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://abdo123:abdo123@blogger-ozeyl.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "sheikh"
+}

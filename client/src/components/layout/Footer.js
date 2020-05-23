@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="footer-copyright text-center py-3 container pt-4 ">
+    <div className="footer-copyright text-center py-3 container pt-4 navbar-fixed-bottom">
       <hr className="divider divider-fade divider-dark my-3" />© 2020 All
       copyrights Reserved by Abdallah Ragab
       <a

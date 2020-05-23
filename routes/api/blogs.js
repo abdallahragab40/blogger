@@ -30,19 +30,19 @@ router.post(
   [
     auth,
     upload.single("photo"),
-    [
-      check("title", "Title is required")
-        .not()
-        .isEmpty()
-        .isLength({ min: 3, max: 150 }),
-      check("body", "Body is required")
-        .not()
-        .isEmpty()
-        .isLength({ min: 50, max: 1000 }),
-      check("category", "Category is Required").not().isEmpty(),
-      check("tags", "Tags is Required").not().isEmpty(),
-      // check("photo", "Photo is Required").not().isEmpty(),
-    ],
+    // [
+    //   check("title", "Title is required")
+    //     .not()
+    //     .isEmpty()
+    //     .isLength({ min: 3, max: 150 }),
+    //   check("body", "Body is required")
+    //     .not()
+    //     .isEmpty()
+    //     .isLength({ min: 50, max: 1000 }),
+    //   check("category", "Category is Required").not().isEmpty(),
+    //   check("tags", "Tags is Required").not().isEmpty(),
+    //   check("photo", "Photo is Required").not().isEmpty(),
+    // ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -57,23 +57,22 @@ router.post(
         .resize({ width: 1000, height: 500 })
         .png()
         .toBuffer();
-
-      req.body.photo = buffer;
+      const b = JSON.parse(req.body.blog);
+      // req.body.photo = buffer;
       const newBlog = new Blog({
-        title: req.body.title,
-        body: req.body.body,
-        photo: req.body.photo,
+        title: b.title,
+        body: b.body,
+        photo: req.file.buffer,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
-        category: req.body.category,
-        tags: req.body.tags.split(",").map((tag) => tag.trim()),
+        category: b.category,
+        tags: b.tags.split(",").map((tag) => tag.trim()),
       });
 
       const blog = await newBlog.save();
       res.json(blog);
     } catch (err) {
-      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -85,7 +84,9 @@ router.post(
 
 router.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ date: -1 });
+    const start = +req.query.start;
+    const size = +req.query.size;
+    const blogs = await Blog.find().skip(start).limit(size).sort({ date: -1 });
 
     res.json(blogs);
   } catch (err) {
